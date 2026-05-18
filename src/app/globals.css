@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: var(--color-brand-50-val);
+  --color-brand-100: var(--color-brand-100-val);
+  --color-brand-200: var(--color-brand-200-val);
+  --color-brand-300: var(--color-brand-300-val);
+  --color-brand-400: var(--color-brand-400-val);
+  --color-brand-500: var(--color-brand-500-val);
+
+  --color-card: var(--color-card-val);
+  --color-footer-bg: var(--color-footer-bg-val);
+  --color-footer-text: var(--color-footer-text-val);
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Montserrat", sans-serif;
+
+  --animate-gradient: gradient-shift 8s ease infinite;
+  --animate-fade-in: fade-in 0.6s ease-out;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-brand-50-val: #FDFBF7;
+  --color-brand-100-val: #F7F3EE;
+  --color-brand-200-val: #D4B895;
+  --color-brand-300-val: #C6A68E;
+  --color-brand-400-val: #2D2D2D;
+  --color-brand-500-val: #EAEAEA;
+  --color-card-val: #FFFFFF;
+  --color-footer-bg-val: #2D2D2D;
+  --color-footer-text-val: #F0EDE8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --color-brand-50-val: #121212;
+  --color-brand-100-val: #1A1A1A;
+  --color-brand-200-val: #D4B895;
+  --color-brand-300-val: #C6A68E;
+  --color-brand-400-val: #E8E4DE;
+  --color-brand-500-val: #2A2A2A;
+  --color-card-val: #1C1C1E;
+  --color-footer-bg-val: #0D0D0D;
+  --color-footer-text-val: #F0EDE8;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-brand-50-val);
+  color: var(--color-brand-400-val);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.maplibregl-popup-content {
+  color: #000 !important;
+}
+.maplibregl-popup-content-wrapper {
+  border-radius: 12px !important;
+  padding: 4px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
