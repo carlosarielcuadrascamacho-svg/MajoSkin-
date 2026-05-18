@@ -287,7 +287,7 @@ export default function SkinQuiz() {
             {!showResult ? (
               <div>
                 {/* Header */}
-                <div className="flex items-center justify-between text-[10px] font-semibold text-brand-300 tracking-wider">
+                <div className="flex items-center justify-between text-[10px] font-semibold text-brand-300 tracking-wider pr-14">
                   <span>PREGUNTA {currentStep + 1} DE {questions.length}</span>
                   <span>{progressPercent}% COMPLETADO</span>
                 </div>
