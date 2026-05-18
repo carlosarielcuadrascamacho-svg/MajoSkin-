@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { products, WHATSAPP_NUMBER } from "@/data/mockData";
 import {
   Sparkles,
@@ -8,8 +8,8 @@ import {
   MessageCircle,
   Check,
   ChevronRight,
-  BookOpen,
   HelpCircle,
+  X,
 } from "lucide-react";
 
 interface Question {
@@ -126,10 +126,48 @@ const skinTypesInfo: Record<
 };
 
 export default function SkinQuiz() {
+  const [isOpen, setIsOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showResult, setShowResult] = useState(false);
   const [diagnosedType, setDiagnosedType] = useState<string | null>(null);
+
+  // Escuchar el hash de la URL para poder abrir el modal desde otras secciones (ej: catálogo)
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === "#abrir-test-piel") {
+        setIsOpen(true);
+        // Limpiamos el hash para evitar comportamientos extraños al hacer atrás
+        window.history.pushState(
+          "",
+          document.title,
+          window.location.pathname + window.location.search
+        );
+      }
+    };
+    window.addEventListener("hashchange", handleHash);
+    if (window.location.hash === "#abrir-test-piel") {
+      setIsOpen(true);
+      window.history.pushState(
+        "",
+        document.title,
+        window.location.pathname + window.location.search
+      );
+    }
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  // Bloquear el scroll de la página principal cuando el modal está abierto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const handleSelectOption = (optionText: string) => {
     const nextAnswers = { ...answers, [questions[currentStep].id]: optionText };
@@ -138,7 +176,6 @@ export default function SkinQuiz() {
     if (currentStep < questions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Calculate results
       const result = calculateResult(nextAnswers);
       setDiagnosedType(result);
       setShowResult(true);
@@ -182,6 +219,12 @@ export default function SkinQuiz() {
     return bestType;
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    // Resetear al cerrar para que si vuelven a abrir empiece de cero
+    handleReset();
+  };
+
   const handleReset = () => {
     setCurrentStep(0);
     setAnswers({});
@@ -195,155 +238,181 @@ export default function SkinQuiz() {
   };
 
   const currentQuestion = questions[currentStep];
-  const progressPercent = Math.round(((currentStep) / questions.length) * 100);
+  const progressPercent = Math.round((currentStep / questions.length) * 100);
 
-  // Find product details from mockData based on diagnostic result
   const diagnosedInfo = diagnosedType ? skinTypesInfo[diagnosedType] : null;
   const recommendedProduct = diagnosedInfo
     ? products.find((p) => p.id === diagnosedInfo.productId)
     : null;
 
   return (
-    <section id="test-piel" className="bg-brand-100/30 py-20 md:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-8">
-        <div className="text-center">
+    <>
+      {/* 1. Banner minimalista y elegante en la Homepage */}
+      <section id="test-piel" className="bg-brand-100/30 py-16 md:py-24 border-t border-brand-200/10">
+        <div className="mx-auto max-w-3xl px-4 sm:px-8 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-200/10 px-4 py-1 text-xs font-semibold text-brand-300">
             <Sparkles className="h-3 w-3" />
-            Asesoría Personalizada
+            Asesoría Virtual
           </span>
-          <h2 className="mt-3 font-serif text-3xl leading-tight text-brand-400 md:text-4xl lg:text-5xl">
-            Test de Diagnóstico de Piel
+          <h2 className="mt-4 font-serif text-2xl leading-tight text-brand-400 md:text-3xl lg:text-4xl">
+            ¿No sabes cuál es tu kit ideal?
           </h2>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-base text-brand-400/85">
-            Descubre las necesidades reales de tu rostro en 1 minuto. Responde
-            estas sencillas preguntas cotidianas sin tecnicismos.
+          <p className="mx-auto mt-3 max-w-lg font-sans text-sm text-brand-400/85">
+            Descubre las necesidades reales de tu rostro en 1 minuto respondiendo unas sencillas preguntas.
           </p>
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="mt-6 inline-flex h-12 items-center justify-center rounded-2xl bg-brand-200 px-8 font-sans text-sm font-semibold text-white transition-all hover:bg-brand-300 hover:shadow-sm"
+          >
+            Iniciar Diagnóstico de Piel →
+          </button>
         </div>
+      </section>
 
-        <div className="mt-12 overflow-hidden rounded-3xl border border-brand-500/10 bg-card p-6 shadow-sm backdrop-blur-md sm:p-10 transition-all dark:border-brand-500/5">
-          {!showResult ? (
-            <div>
-              {/* Progress bar */}
-              <div className="flex items-center justify-between text-xs font-semibold text-brand-300">
-                <span>PREGUNTA {currentStep + 1} DE {questions.length}</span>
-                <span>{progressPercent}% COMPLETADO</span>
-              </div>
-              <div className="mt-3 h-1.5 w-full rounded-full bg-brand-100 dark:bg-brand-500/20">
-                <div
-                  className="h-full rounded-full bg-brand-200 transition-all duration-300 ease-out"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
+      {/* 2. Modal Emergente (Pop-up de Lujo) */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md animate-fade-in">
+          {/* Backdrop Click to Close */}
+          <div className="absolute inset-0" onClick={handleClose} />
 
-              {/* Question card */}
-              <div className="mt-8">
-                <h3 className="font-serif text-xl font-medium leading-snug text-brand-400 sm:text-2xl flex gap-2">
-                  <HelpCircle className="h-6 w-6 text-brand-200 shrink-0 mt-0.5" />
-                  {currentQuestion.text}
-                </h3>
+          {/* Dialog Card Box */}
+          <div className="relative w-full max-w-2xl overflow-y-auto max-h-[90vh] rounded-3xl border border-brand-500/20 bg-card p-6 shadow-xl sm:p-10 dark:border-brand-500/10 animate-fade-in z-10 scrollbar-hide">
+            
+            {/* Close Button X */}
+            <button
+              type="button"
+              onClick={handleClose}
+              aria-label="Cerrar test"
+              className="absolute top-4 right-4 text-brand-400/50 hover:text-brand-400 hover:bg-brand-100 p-2 rounded-xl transition-all dark:hover:bg-brand-500/20"
+            >
+              <X className="h-5 w-5" />
+            </button>
 
-                <div className="mt-8 flex flex-col gap-3">
-                  {currentQuestion.options.map((option, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSelectOption(option.text)}
-                      className="group flex w-full items-center justify-between rounded-2xl border border-brand-500/20 bg-brand-50/50 p-4 text-left font-sans text-sm text-brand-400 transition-all duration-200 hover:border-brand-200 hover:bg-brand-100/50 hover:shadow-sm"
-                    >
-                      <span className="pr-4">{option.text}</span>
-                      <ChevronRight className="h-4 w-4 shrink-0 text-brand-300 opacity-0 transition-opacity group-hover:opacity-100" />
-                    </button>
-                  ))}
+            {!showResult ? (
+              <div>
+                {/* Progress */}
+                <div className="flex items-center justify-between text-[10px] font-semibold text-brand-300 tracking-wider">
+                  <span>PREGUNTA {currentStep + 1} DE {questions.length}</span>
+                  <span>{progressPercent}% COMPLETADO</span>
                 </div>
-              </div>
+                <div className="mt-3 h-1.5 w-full rounded-full bg-brand-100 dark:bg-brand-500/20">
+                  <div
+                    className="h-full rounded-full bg-brand-200 transition-all duration-300 ease-out"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
 
-              {currentStep > 0 && (
-                <div className="mt-8 flex justify-start">
+                {/* Question */}
+                <div className="mt-6">
+                  <h3 className="font-serif text-lg font-medium leading-snug text-brand-400 sm:text-xl flex gap-2">
+                    <HelpCircle className="h-5 w-5 text-brand-200 shrink-0 mt-0.5" />
+                    {currentQuestion.text}
+                  </h3>
+
+                  <div className="mt-6 flex flex-col gap-3">
+                    {currentQuestion.options.map((option, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSelectOption(option.text)}
+                        className="group flex w-full items-center justify-between rounded-2xl border border-brand-500/20 bg-brand-50/50 p-4 text-left font-sans text-sm text-brand-400 transition-all duration-200 hover:border-brand-200 hover:bg-brand-100/50 hover:shadow-sm"
+                      >
+                        <span className="pr-4">{option.text}</span>
+                        <ChevronRight className="h-4 w-4 shrink-0 text-brand-300 opacity-0 transition-opacity group-hover:opacity-100" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {currentStep > 0 && (
+                  <div className="mt-6 flex justify-start">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(currentStep - 1)}
+                      className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-brand-300 hover:text-brand-200 transition-colors"
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                      Pregunta anterior
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div>
+                <div className="text-center">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-200/20 text-brand-200">
+                    <Check className="h-6 w-6" />
+                  </span>
+                  <h3 className="mt-4 font-serif text-xl font-semibold text-brand-400">
+                    ¡Diagnóstico Listo!
+                  </h3>
+                  <p className="mt-1 font-sans text-[10px] text-brand-300 uppercase tracking-widest font-semibold">
+                    Tu tipo de piel es:
+                  </p>
+                  <div className="mt-3 inline-block rounded-2xl bg-gradient-to-br from-brand-200 to-brand-300 px-6 py-2 text-base font-serif font-semibold text-white shadow-sm">
+                    {diagnosedInfo?.name}
+                  </div>
+                </div>
+
+                <div className="mt-6 border-t border-brand-500/10 pt-4">
+                  <p className="font-sans text-sm leading-relaxed text-brand-400/90">
+                    {diagnosedInfo?.description}
+                  </p>
+                </div>
+
+                {recommendedProduct && (
+                  <div className="mt-6 rounded-3xl border border-brand-500/10 bg-brand-50/50 p-5">
+                    <span className="inline-block rounded-lg bg-brand-200/10 px-2.5 py-1 font-sans text-[9px] font-bold uppercase tracking-wider text-brand-200">
+                      Rutina Recomendada
+                    </span>
+                    <h4 className="mt-2 font-serif text-base font-semibold text-brand-400">
+                      {recommendedProduct.name}
+                    </h4>
+
+                    <ul className="mt-3 flex flex-col gap-2">
+                      {recommendedProduct.includes.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 font-sans text-sm text-brand-400/85"
+                        >
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-200" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  {diagnosedInfo && recommendedProduct && (
+                    <a
+                      href={getWhatsAppLink(
+                        diagnosedInfo.name,
+                        recommendedProduct.name
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-brand-200 font-sans text-sm font-semibold text-white transition-all hover:bg-brand-300 hover:shadow-sm"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      Preguntar por mi Kit con María
+                    </a>
+                  )}
                   <button
                     type="button"
-                    onClick={() => setCurrentStep(currentStep - 1)}
-                    className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-brand-300 hover:text-brand-200 transition-colors"
+                    onClick={handleReset}
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-brand-500/30 bg-transparent px-6 font-sans text-sm font-semibold text-brand-400 transition-all hover:border-brand-200 hover:text-brand-300"
                   >
-                    <RotateCcw className="h-3 w-3" />
-                    Regresar a la pregunta anterior
+                    <RotateCcw className="h-4 w-4" />
+                    Repetir Test
                   </button>
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="animate-fade-in">
-              <div className="text-center">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-200/20 text-brand-200">
-                  <Check className="h-6 w-6" />
-                </span>
-                <h3 className="mt-4 font-serif text-2xl font-semibold text-brand-400">
-                  ¡Diagnóstico Listo!
-                </h3>
-                <p className="mt-1 font-sans text-xs text-brand-300 uppercase tracking-widest font-semibold">
-                  Tu tipo de piel es:
-                </p>
-                <div className="mt-3 inline-block rounded-2xl bg-gradient-to-br from-brand-200 to-brand-300 px-6 py-2 text-lg font-serif font-semibold text-white shadow-sm">
-                  {diagnosedInfo?.name}
-                </div>
               </div>
-
-              <div className="mt-8 border-t border-brand-500/10 pt-6">
-                <p className="font-sans text-sm leading-relaxed text-brand-400/90">
-                  {diagnosedInfo?.description}
-                </p>
-              </div>
-
-              {recommendedProduct && (
-                <div className="mt-8 rounded-3xl border border-brand-500/10 bg-brand-50/50 p-5 sm:p-6">
-                  <span className="inline-block rounded-lg bg-brand-200/10 px-2.5 py-1 font-sans text-[10px] font-bold uppercase tracking-wider text-brand-200">
-                    Rutina Recomendada
-                  </span>
-                  <h4 className="mt-2 font-serif text-lg font-semibold text-brand-400 sm:text-xl">
-                    {recommendedProduct.name}
-                  </h4>
-
-                  <ul className="mt-4 flex flex-col gap-2">
-                    {recommendedProduct.includes.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2 font-sans text-sm text-brand-400/85"
-                      >
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-200" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                {diagnosedInfo && recommendedProduct && (
-                  <a
-                    href={getWhatsAppLink(
-                      diagnosedInfo.name,
-                      recommendedProduct.name
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-brand-200 font-sans text-sm font-semibold text-white transition-all hover:bg-brand-300 hover:shadow-sm"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    Preguntar por mi Kit con María
-                  </a>
-                )}
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-brand-500/30 bg-transparent px-6 font-sans text-sm font-semibold text-brand-400 transition-all hover:border-brand-200 hover:text-brand-300"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  Repetir Test
-                </button>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      )}
+    </>
   );
 }

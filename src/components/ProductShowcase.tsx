@@ -81,7 +81,7 @@ export default function ProductShowcase({ products }: ProductShowcaseProps) {
             ¿No estás segura de cuál es el ideal para ti?
           </p>
           <a
-            href="#test-piel"
+            href="#abrir-test-piel"
             className="mt-3 inline-flex items-center gap-2 rounded-2xl bg-brand-200/10 px-5 py-2.5 font-sans text-sm font-semibold text-brand-300 transition-all hover:bg-brand-200 hover:text-white"
           >
             Hacer Test Diagnóstico de Piel →
