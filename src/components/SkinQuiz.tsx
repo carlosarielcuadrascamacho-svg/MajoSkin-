@@ -126,18 +126,23 @@ const skinTypesInfo: Record<
 };
 
 export default function SkinQuiz() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showResult, setShowResult] = useState(false);
   const [diagnosedType, setDiagnosedType] = useState<string | null>(null);
 
-  // Escuchar el hash de la URL para poder abrir el modal desde otras secciones (ej: catálogo)
+  // Escuchar el hash de la URL para activar el test y hacer scroll suave
   useEffect(() => {
     const handleHash = () => {
       if (window.location.hash === "#abrir-test-piel") {
-        setIsOpen(true);
-        // Limpiamos el hash para evitar comportamientos extraños al hacer atrás
+        setIsActive(true);
+        setTimeout(() => {
+          const element = document.getElementById("test-piel");
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 100);
         window.history.pushState(
           "",
           document.title,
@@ -147,7 +152,7 @@ export default function SkinQuiz() {
     };
     window.addEventListener("hashchange", handleHash);
     if (window.location.hash === "#abrir-test-piel") {
-      setIsOpen(true);
+      setIsActive(true);
       window.history.pushState(
         "",
         document.title,
@@ -156,18 +161,6 @@ export default function SkinQuiz() {
     }
     return () => window.removeEventListener("hashchange", handleHash);
   }, []);
-
-  // Bloquear el scroll de la página principal cuando el modal está abierto
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
 
   const handleSelectOption = (optionText: string) => {
     const nextAnswers = { ...answers, [questions[currentStep].id]: optionText };
@@ -220,9 +213,15 @@ export default function SkinQuiz() {
   };
 
   const handleClose = () => {
-    setIsOpen(false);
-    // Resetear al cerrar para que si vuelven a abrir empiece de cero
+    setIsActive(false);
     handleReset();
+    // Scroll suave de vuelta al banner
+    setTimeout(() => {
+      const element = document.getElementById("test-piel");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 100);
   };
 
   const handleReset = () => {
@@ -246,44 +245,40 @@ export default function SkinQuiz() {
     : null;
 
   return (
-    <>
-      {/* 1. Banner minimalista y elegante en la Homepage */}
-      <section id="test-piel" className="bg-brand-100/30 py-16 md:py-24 border-t border-brand-200/10">
-        <div className="mx-auto max-w-3xl px-4 sm:px-8 text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-200/10 px-4 py-1 text-xs font-semibold text-brand-300">
-            <Sparkles className="h-3 w-3" />
-            Asesoría Virtual
-          </span>
-          <h2 className="mt-4 font-serif text-2xl leading-tight text-brand-400 md:text-3xl lg:text-4xl">
-            ¿No sabes cuál es tu kit ideal?
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-sm text-brand-400/85">
-            Descubre las necesidades reales de tu rostro en 1 minuto respondiendo unas sencillas preguntas.
-          </p>
-          <button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            className="mt-6 inline-flex h-12 items-center justify-center rounded-2xl bg-brand-200 px-8 font-sans text-sm font-semibold text-white transition-all hover:bg-brand-300 hover:shadow-sm"
-          >
-            Iniciar Diagnóstico de Piel →
-          </button>
-        </div>
-      </section>
-
-      {/* 2. Modal Emergente (Pop-up de Lujo) */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md animate-fade-in">
-          {/* Backdrop Click to Close */}
-          <div className="absolute inset-0" onClick={handleClose} />
-
-          {/* Dialog Card Box */}
-          <div className="relative w-full max-w-2xl overflow-y-auto max-h-[90vh] rounded-3xl border border-brand-500/20 bg-card p-6 shadow-xl sm:p-10 dark:border-brand-500/10 animate-fade-in z-10 scrollbar-hide">
-            
-            {/* Close Button X */}
+    <section
+      id="test-piel"
+      className="bg-brand-100/30 py-20 md:py-28 border-t border-brand-200/10 transition-all duration-500 ease-in-out"
+    >
+      <div className="mx-auto max-w-3xl px-4 sm:px-8">
+        {!isActive ? (
+          /* 1. Banner elegante por defecto */
+          <div className="text-center animate-fade-in">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-200/10 px-4 py-1 text-xs font-semibold text-brand-300">
+              <Sparkles className="h-3 w-3" />
+              Asesoría Virtual
+            </span>
+            <h2 className="mt-4 font-serif text-3xl leading-tight text-brand-400 md:text-4xl">
+              ¿No sabes cuál es tu kit ideal?
+            </h2>
+            <p className="mx-auto mt-3 max-w-lg font-sans text-base text-brand-400/85">
+              Descubre las necesidades reales de tu rostro en 1 minuto respondiendo unas sencillas preguntas.
+            </p>
+            <button
+              type="button"
+              onClick={() => setIsActive(true)}
+              className="mt-6 inline-flex h-12 items-center justify-center rounded-2xl bg-brand-200 px-8 font-sans text-sm font-semibold text-white transition-all hover:bg-brand-300 hover:shadow-sm active:scale-95"
+            >
+              Iniciar Diagnóstico de Piel →
+            </button>
+          </div>
+        ) : (
+          /* 2. Cuestionario en flujo de página (Inline Card) */
+          <div className="relative overflow-hidden rounded-3xl border border-brand-500/20 bg-card p-6 shadow-sm sm:p-10 dark:border-brand-500/10 animate-fade-in">
+            {/* Close Cross Button */}
             <button
               type="button"
               onClick={handleClose}
-              aria-label="Cerrar test"
+              aria-label="Cerrar diagnóstico"
               className="absolute top-4 right-4 text-brand-400/50 hover:text-brand-400 hover:bg-brand-100 p-2 rounded-xl transition-all dark:hover:bg-brand-500/20"
             >
               <X className="h-5 w-5" />
@@ -291,7 +286,7 @@ export default function SkinQuiz() {
 
             {!showResult ? (
               <div>
-                {/* Progress */}
+                {/* Header */}
                 <div className="flex items-center justify-between text-[10px] font-semibold text-brand-300 tracking-wider">
                   <span>PREGUNTA {currentStep + 1} DE {questions.length}</span>
                   <span>{progressPercent}% COMPLETADO</span>
@@ -303,7 +298,7 @@ export default function SkinQuiz() {
                   />
                 </div>
 
-                {/* Question */}
+                {/* Question Area */}
                 <div className="mt-6">
                   <h3 className="font-serif text-lg font-medium leading-snug text-brand-400 sm:text-xl flex gap-2">
                     <HelpCircle className="h-5 w-5 text-brand-200 shrink-0 mt-0.5" />
@@ -316,7 +311,7 @@ export default function SkinQuiz() {
                         key={idx}
                         type="button"
                         onClick={() => handleSelectOption(option.text)}
-                        className="group flex w-full items-center justify-between rounded-2xl border border-brand-500/20 bg-brand-50/50 p-4 text-left font-sans text-sm text-brand-400 transition-all duration-200 hover:border-brand-200 hover:bg-brand-100/50 hover:shadow-sm"
+                        className="group flex w-full items-center justify-between rounded-2xl border border-brand-500/20 bg-brand-50/50 p-4 text-left font-sans text-sm text-brand-400 transition-all duration-200 hover:border-brand-200 hover:bg-brand-100/50 hover:shadow-sm active:scale-[0.99]"
                       >
                         <span className="pr-4">{option.text}</span>
                         <ChevronRight className="h-4 w-4 shrink-0 text-brand-300 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -325,8 +320,9 @@ export default function SkinQuiz() {
                   </div>
                 </div>
 
-                {currentStep > 0 && (
-                  <div className="mt-6 flex justify-start">
+                {/* Footer Controls */}
+                <div className="mt-8 flex items-center justify-between border-t border-brand-500/10 pt-4">
+                  {currentStep > 0 ? (
                     <button
                       type="button"
                       onClick={() => setCurrentStep(currentStep - 1)}
@@ -335,11 +331,22 @@ export default function SkinQuiz() {
                       <RotateCcw className="h-3 w-3" />
                       Pregunta anterior
                     </button>
-                  </div>
-                )}
+                  ) : (
+                    <div />
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="font-sans text-xs font-semibold text-brand-400/60 hover:text-brand-400 transition-colors"
+                  >
+                    Cancelar y Salir
+                  </button>
+                </div>
               </div>
             ) : (
-              <div>
+              /* Results Area */
+              <div className="animate-fade-in">
                 <div className="text-center">
                   <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand-200/20 text-brand-200">
                     <Check className="h-6 w-6" />
@@ -384,7 +391,7 @@ export default function SkinQuiz() {
                   </div>
                 )}
 
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row border-t border-brand-500/10 pt-6">
                   {diagnosedInfo && recommendedProduct && (
                     <a
                       href={getWhatsAppLink(
@@ -399,20 +406,29 @@ export default function SkinQuiz() {
                       Preguntar por mi Kit con María
                     </a>
                   )}
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-brand-500/30 bg-transparent px-6 font-sans text-sm font-semibold text-brand-400 transition-all hover:border-brand-200 hover:text-brand-300"
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                    Repetir Test
-                  </button>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      className="flex-1 sm:flex-none inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-brand-500/30 bg-transparent px-6 font-sans text-sm font-semibold text-brand-400 transition-all hover:border-brand-200 hover:text-brand-300"
+                    >
+                      <RotateCcw className="h-4 w-4" />
+                      Repetir Test
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleClose}
+                      className="flex-1 sm:flex-none inline-flex h-12 items-center justify-center rounded-2xl bg-brand-100 hover:bg-brand-200/20 px-6 font-sans text-sm font-semibold text-brand-400 transition-all"
+                    >
+                      Finalizar y Cerrar
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </section>
   );
 }
