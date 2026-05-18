@@ -24,7 +24,7 @@ const siteUrl = "https://majocskin.com";
 export const metadata: Metadata = {
   title: "Majoc Skin | Cuidado Facial y Diseño de Miradas",
   description:
-    "Licenciada en Cosmiatría en formación. Tratamientos faciales profesionales en Villa Benito Juárez, Sinaloa. Agenda tu cita hoy.",
+    "Estudiante de la Licenciatura en Cosmiatría. Tratamientos faciales profesionales en Villa Benito Juárez, Sinaloa. Agenda tu cita hoy.",
   icons: {
     icon: [{ url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
     apple: [{ url: "/icons/apple-icon-180.png", sizes: "180x180" }],

@@ -11,13 +11,13 @@ export default function AboutMe() {
 
           <div className="flex-1 text-center md:text-left">
             <h2 className="font-serif text-3xl leading-tight text-brand-400 md:text-4xl lg:text-5xl">
-              Conoce a Majo
+              Conoce a María
             </h2>
 
             <div className="mx-auto mt-2 h-0.5 w-16 bg-brand-200 md:mx-0" />
 
             <p className="mt-6 font-sans text-base leading-relaxed text-brand-400/90 sm:text-lg">
-              Licenciada en Cosmiatría en formación, apasionada por realzar la
+              Estudiante de la Licenciatura en Cosmiatría, apasionada por realzar la
               belleza natural de cada persona. Mi enfoque combina el
               conocimiento científico del cuidado de la piel con un trato
               cercano y personalizado.
