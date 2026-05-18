@@ -13,7 +13,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           <h2 className="font-serif text-3xl leading-tight text-brand-400 md:text-4xl lg:text-5xl">
             Lo que dicen mis clientas
           </h2>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-base text-brand-400/70">
+          <p className="mx-auto mt-3 max-w-lg font-sans text-base text-brand-400/85">
             La satisfacción de quienes confían en mi trabajo habla por sí sola.
           </p>
         </div>
@@ -45,7 +45,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
                 </div>
               </div>
 
-              <p className="mt-4 font-sans text-sm leading-relaxed text-brand-400/70">
+              <p className="mt-4 font-sans text-sm leading-relaxed text-brand-400/90">
                 &ldquo;{t.text}&rdquo;
               </p>
             </article>

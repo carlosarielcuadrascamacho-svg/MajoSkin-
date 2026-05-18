@@ -18,7 +18,7 @@ export default function FAQSection({ faqs }: FAQProps) {
           <h2 className="font-serif text-3xl leading-tight text-brand-400 md:text-4xl lg:text-5xl">
             Preguntas Frecuentes
           </h2>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-base text-brand-400/70">
+          <p className="mx-auto mt-3 max-w-lg font-sans text-base text-brand-400/85">
             Todo lo que necesitas saber antes de tu primera cita.
           </p>
         </div>
@@ -49,7 +49,7 @@ export default function FAQSection({ faqs }: FAQProps) {
                     isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                   }`}
                 >
-                  <p className="border-t border-brand-500 px-6 pb-4 pt-3 font-sans text-sm leading-relaxed text-brand-400/70">
+                  <p className="border-t border-brand-500 px-6 pb-4 pt-3 font-sans text-sm leading-relaxed text-brand-400/90">
                     {faq.answer}
                   </p>
                 </div>
