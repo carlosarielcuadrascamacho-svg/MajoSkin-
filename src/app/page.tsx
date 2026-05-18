@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import AboutMe from "@/components/AboutMe";
 import ServiceCatalog from "@/components/ServiceCatalog";
 import ProductShowcase from "@/components/ProductShowcase";
+import SkinQuiz from "@/components/SkinQuiz";
 import Testimonials from "@/components/Testimonials";
 import Gallery from "@/components/Gallery";
 import FAQSection from "@/components/FAQ";
@@ -27,6 +28,9 @@ export default function HomePage() {
       </AnimatedSection>
       <AnimatedSection delay={100}>
         <ProductShowcase products={products} />
+      </AnimatedSection>
+      <AnimatedSection delay={100}>
+        <SkinQuiz />
       </AnimatedSection>
       <AnimatedSection delay={100}>
         <Testimonials testimonials={testimonials} />

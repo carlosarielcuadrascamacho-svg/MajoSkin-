@@ -21,7 +21,7 @@ export default function FooterAndLocation({
             </p>
 
             <a
-              href={`https://wa.me/${"526731044855"}?text=Hola%20Majo%2C%20tengo%20una%20consulta`}
+              href={`https://wa.me/${"526731044855"}?text=Hola%20Mar%C3%ADa%2C%20tengo%20una%20consulta`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 font-sans text-sm text-brand-200 transition-colors hover:text-brand-100"

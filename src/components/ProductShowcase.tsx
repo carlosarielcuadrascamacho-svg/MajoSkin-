@@ -7,7 +7,7 @@ interface ProductShowcaseProps {
 }
 
 function buildWhatsAppLink(productName: string): string {
-  const message = `Hola Majo, quiero el ${productName}`;
+  const message = `Hola María, quiero el ${productName}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
@@ -75,6 +75,18 @@ export default function ProductShowcase({ products }: ProductShowcaseProps) {
         <p className="mt-6 text-center font-sans text-xs text-brand-400/70">
           Desliza para ver más kits →
         </p>
+
+        <div className="mt-12 flex flex-col items-center justify-center rounded-3xl border border-brand-200/20 bg-brand-100/20 p-6 text-center">
+          <p className="font-sans text-sm font-medium text-brand-400/90">
+            ¿No estás segura de cuál es el ideal para ti?
+          </p>
+          <a
+            href="#test-piel"
+            className="mt-3 inline-flex items-center gap-2 rounded-2xl bg-brand-200/10 px-5 py-2.5 font-sans text-sm font-semibold text-brand-300 transition-all hover:bg-brand-200 hover:text-white"
+          >
+            Hacer Test Diagnóstico de Piel →
+          </a>
+        </div>
       </div>
     </section>
   );

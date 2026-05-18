@@ -10,7 +10,7 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Hola Majo, soy ${form.name}. ${form.message} (${form.email})`;
+    const text = `Hola María, soy ${form.name}. ${form.message} (${form.email})`;
     window.open(
       `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,
       "_blank"
