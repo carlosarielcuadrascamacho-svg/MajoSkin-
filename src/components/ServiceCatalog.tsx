@@ -12,7 +12,6 @@ import {
   Clock,
   MessageCircle,
   Check,
-  AlertCircle,
 } from "lucide-react";
 
 const iconMap: Record<string, typeof Sparkles> = {
@@ -57,8 +56,6 @@ function getSelectedCount(
   return (selected[entry.id] || []).length;
 }
 
-const WARNING_TEXT =
-  "Por límite de tiempo, agendar por separado de la limpieza facial.";
 
 interface ServiceCatalogProps {
   services: CatalogEntry[];
@@ -68,8 +65,6 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [descExpanded, setDescExpanded] = useState<string | null>(null);
   const [selected, setSelected] = useState<Record<string, string[]>>({});
-
-  const hasDepilacion = (selected["depilacion-cera"]?.length ?? 0) > 0;
 
   const toggleExpand = (id: string) => {
     setExpanded((prev) => (prev === id ? null : id));
@@ -100,8 +95,6 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
     return entry.items.filter((item) => selectedIds.includes(item.id));
   };
 
-  const limpiezaBlocked = hasDepilacion;
-
   return (
     <section id="servicios" className="bg-brand-100/50 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 md:px-16 lg:px-24">
@@ -129,7 +122,7 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                   key={entry.id}
                   className={`group flex flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md ${
                     isLast ? "md:col-span-2 lg:col-span-1" : ""
-                  } ${limpiezaBlocked && !isComingSoon ? "opacity-50" : ""} ${
+                  } ${
                     isComingSoon ? "border-2 border-dashed border-brand-300/40" : ""
                   }`}
                 >
@@ -182,17 +175,6 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                     </div>
                   </div>
 
-                  {limpiezaBlocked && !isComingSoon && (
-                    <div className="px-6 pt-3">
-                      <div className="flex items-start gap-1.5 rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/20">
-                        <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
-                        <p className="font-sans text-[12px] leading-tight text-red-500">
-                          {WARNING_TEXT}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
                   <div className="mt-auto flex items-center justify-between px-6 pb-5 pt-5">
                     <button
                       type="button"
@@ -211,23 +193,15 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                     </button>
 
                     {!isComingSoon && (
-                      limpiezaBlocked ? (
-                        <span
-                          className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-2xl bg-brand-500/50 px-4 py-2 font-sans text-xs font-semibold text-brand-400/50"
-                        >
-                          No disponible
-                        </span>
-                      ) : (
-                        <a
-                          href={simpleWhatsAppLink(entry.title, entry.price)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-2xl bg-brand-200 px-4 py-2 font-sans text-xs font-semibold text-white transition-all hover:bg-brand-300"
-                        >
-                          <MessageCircle className="h-3.5 w-3.5" />
-                          Agendar
-                        </a>
-                      )
+                      <a
+                        href={simpleWhatsAppLink(entry.title, entry.price)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-2xl bg-brand-200 px-4 py-2 font-sans text-xs font-semibold text-white transition-all hover:bg-brand-300"
+                      >
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        Agendar
+                      </a>
                     )}
                   </div>
                 </article>
