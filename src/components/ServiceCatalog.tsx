@@ -273,7 +273,11 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                       )}
                     </div>
 
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                    <p className="mt-1 font-sans text-sm leading-relaxed text-brand-400/90">
+                      {entry.shortDescription}
+                    </p>
+
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
                       {desdePrice && (
                         <span className="font-sans text-sm font-semibold text-brand-200">
                           {desdePrice}
