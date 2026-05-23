@@ -181,11 +181,17 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                       {entry.shortDescription}
                     </p>
 
-                    {open && (
+                    <div
+                      className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                        open
+                          ? "max-h-96 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
                       <p className="mt-3 font-sans text-sm leading-relaxed text-brand-400/80">
                         {entry.benefitDescription}
                       </p>
-                    )}
+                    </div>
                   </div>
 
                   {limpiezaBlocked && !isSelected && (
