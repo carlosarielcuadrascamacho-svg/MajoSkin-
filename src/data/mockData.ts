@@ -66,7 +66,7 @@ export const services: CatalogEntry[] = [
     title: "Limpieza Facial Profunda",
     shortDescription: "Libera tus poros y devuelve la luminosidad",
     benefitDescription:
-      "Eliminación de impurezas, células muertas y exceso de sebo. Tu piel respira y recupera su brillo natural al instante.",
+      "Tratamiento ideal para eliminar impurezas, exceso de grasa y células muertas mientras se revitaliza la piel profundamente. Ayuda a mejorar la textura, luminosidad y apariencia del rostro mediante una experiencia relajante y personalizada.",
     gradient: "from-brand-200 to-brand-300",
     price: "$300",
     duration: "60 min",
@@ -75,7 +75,8 @@ export const services: CatalogEntry[] = [
     id: "depilacion-cera",
     type: "category",
     title: "Depilación con Cera",
-    shortDescription: "Elimina el vello de forma rápida y eficaz",
+    shortDescription:
+      "Elimina el vello desde la raíz para brindar una piel más suave, limpia y con un acabado uniforme.",
     gradient: "from-brand-300 to-brand-200",
     selectionType: "multi",
     items: [
@@ -91,7 +92,8 @@ export const services: CatalogEntry[] = [
     id: "diseno-cejas",
     type: "category",
     title: "Diseño de Cejas",
-    shortDescription: "Realza tu mirada con cejas perfectamente definidas",
+    shortDescription:
+      "Tratamiento que ayuda a alinear, definir y estilizar las cejas para lograr un efecto más ordenado, peinado y armonioso según tus facciones.",
     gradient: "from-brand-200 to-brand-100",
     selectionType: "single",
     items: [
