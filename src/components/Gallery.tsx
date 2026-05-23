@@ -68,54 +68,40 @@ export default function Gallery() {
           </div>
         </AnimatedSection>
 
-        <div className="mt-12 flex flex-col gap-8">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {interactiveResults.map((item, i) => {
-              const isLastOdd =
-                interactiveResults.length % 2 !== 0 &&
-                i === interactiveResults.length - 1;
-              return (
-                <div
-                  key={`slider-${i}`}
-                  className={isLastOdd ? "md:col-span-2" : ""}
-                >
-                  <AnimatedSection delay={i * 100}>
-                    <BeforeAfterSlider
-                      beforeImage={item.before}
-                      afterImage={item.after}
-                      title={item.title}
-                      description={item.desc}
-                    />
-                  </AnimatedSection>
-                </div>
-              );
-            })}
-          </div>
+        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {interactiveResults.map((item, i) => (
+            <AnimatedSection key={`slider-${i}`} delay={i * 100}>
+              <BeforeAfterSlider
+                beforeImage={item.before}
+                afterImage={item.after}
+                title={item.title}
+                description={item.desc}
+              />
+            </AnimatedSection>
+          ))}
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {staticResults.map((item, i) => (
-              <AnimatedSection key={`static-${i}`} delay={i * 100}>
-                <article className="group overflow-hidden rounded-3xl bg-card p-4 shadow-sm transition-all hover:shadow-md">
-                  <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-brand-100">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      draggable="false"
-                    />
-                  </div>
-                  <div className="mt-4 px-1 pb-1">
-                    <h3 className="font-serif text-lg font-semibold text-brand-400">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1 font-sans text-sm leading-relaxed text-brand-400/90">
-                      {item.desc}
-                    </p>
-                  </div>
-                </article>
-              </AnimatedSection>
-            ))}
-          </div>
+          {staticResults.map((item, i) => (
+            <AnimatedSection key={`static-${i}`} delay={(i + interactiveResults.length) * 100}>
+              <article className="group overflow-hidden rounded-3xl bg-card p-4 shadow-sm transition-all hover:shadow-md">
+                <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-brand-100">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    draggable="false"
+                  />
+                </div>
+                <div className="mt-4 px-1 pb-1">
+                  <h3 className="font-serif text-lg font-semibold text-brand-400">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1 font-sans text-sm leading-relaxed text-brand-400/90">
+                    {item.desc}
+                  </p>
+                </div>
+              </article>
+            </AnimatedSection>
+          ))}
         </div>
       </div>
     </section>
