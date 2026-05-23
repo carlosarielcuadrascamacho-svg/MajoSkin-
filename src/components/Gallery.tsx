@@ -23,12 +23,6 @@ const interactiveResults = [
     before: "/images/LimpiezaFacialAntes3.jpeg",
     after: "/images/LimpiezaFacialDespues3.jpeg",
   },
-  {
-    title: "Hidratación & Luminosidad",
-    desc: "Nutrición celular profunda para pieles apagadas o deshidratadas. Restaura el brillo natural y la elasticidad, logrando un efecto de jugosidad inmediato.",
-    before: "/images/hidratacion-antes.png",
-    after: "/images/hidratacion-despues.png",
-  },
 ];
 
 const staticResults = [
