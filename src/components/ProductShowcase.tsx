@@ -46,6 +46,10 @@ export default function ProductShowcase({ products }: ProductShowcaseProps) {
                     {product.name}
                   </h3>
 
+                  <span className="mt-1 inline-block font-sans text-base font-semibold text-brand-200">
+                    {product.price}
+                  </span>
+
                   <p className="mt-3 font-sans text-sm leading-relaxed text-brand-400/90">
                     {product.description}
                   </p>

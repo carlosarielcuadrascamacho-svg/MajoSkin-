@@ -35,6 +35,7 @@ export interface Product {
   name: string;
   description: string;
   image: string;
+  price: string;
 }
 
 export interface BusinessInfo {
@@ -135,6 +136,7 @@ export const products: Product[] = [
     description:
       "Controla el exceso de grasa, minimiza poros y matifica la piel. Ideal para pieles con brillo excesivo y tendencia acneica.",
     image: "/images/KitPielGrasa.jpeg",
+    price: "$200",
   },
   {
     id: "kit-piel-seca",
@@ -142,6 +144,7 @@ export const products: Product[] = [
     description:
       "Hidratación profunda que restaura la barrera cutánea. Perfecto para pieles deshidratadas, tirantes o con descamación.",
     image: "/images/KitPielSeca.jpeg",
+    price: "$159",
   },
   {
     id: "kit-piel-mixta",
@@ -149,6 +152,7 @@ export const products: Product[] = [
     description:
       "Equilibra las zonas grasas sin resecar las secas. Formulado para pieles con necesidades mixtas.",
     image: "/images/KitPielMixta.jpeg",
+    price: "$200",
   },
   {
     id: "kit-antiedad",
@@ -156,6 +160,7 @@ export const products: Product[] = [
     description:
       "Previene y combate los signos de la edad. Estimula colágeno, reduce líneas de expresión y reafirma el rostro.",
     image: "/images/KitPielAnti-Edad.jpeg",
+    price: "$200",
   },
   {
     id: "kit-acneica",
@@ -163,6 +168,7 @@ export const products: Product[] = [
     description:
       "Purifica y calma la piel con tendencia acneica. Reduce imperfecciones, controla el sebo y previene brotes.",
     image: "/images/KitPielAcneica.jpeg",
+    price: "$159",
   },
   {
     id: "kit-anti-manchas",
@@ -170,6 +176,7 @@ export const products: Product[] = [
     description:
       "Atenúa manchas y unifica el tono de la piel. Ideal para hiperpigmentación, melasma y marcas post-acné.",
     image: "/images/KitPielAnti-Manchas.jpeg",
+    price: "$200",
   },
   {
     id: "kit-sensible",
@@ -177,6 +184,7 @@ export const products: Product[] = [
     description:
       "Calma, hidrata y fortalece la barrera cutánea. Libre de fragancias e irritantes. Para pieles reactivas.",
     image: "/images/KitPielSencible.jpeg",
+    price: "$159",
   },
 ];
 
