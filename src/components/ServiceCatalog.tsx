@@ -136,13 +136,16 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
 
             if (entry.type === "simple") {
               const isSelected = selectedSimple === entry.id;
+              const isComingSoon = entry.comingSoon;
 
               return (
                 <article
                   key={entry.id}
                   className={`group flex flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md ${
                     isLast ? "md:col-span-2 lg:col-span-1" : ""
-                  } ${limpiezaBlocked ? "opacity-50" : ""}`}
+                  } ${limpiezaBlocked ? "opacity-50" : ""} ${
+                    isComingSoon ? "border-2 border-dashed border-brand-300/40" : ""
+                  }`}
                 >
                   <div className="flex items-start gap-4 p-6 pb-0">
                     <div
@@ -156,7 +159,12 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                         <h3 className="font-serif text-lg font-semibold leading-snug text-brand-400">
                           {entry.title}
                         </h3>
-                        {isSelected && (
+                        {isComingSoon && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 font-sans text-[11px] font-semibold text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
+                            PRÓXIMAMENTE
+                          </span>
+                        )}
+                        {isSelected && !isComingSoon && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-brand-200/20 px-2.5 py-0.5 font-sans text-[11px] font-semibold text-brand-200">
                             <Check className="h-2.5 w-2.5" />
                             Seleccionado
@@ -164,15 +172,17 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                         )}
                       </div>
 
-                      <div className="mt-1.5 flex flex-wrap items-center gap-3">
-                        <span className="font-sans text-sm font-semibold text-brand-200">
-                          {entry.price}
-                        </span>
-                        <span className="flex items-center gap-1 font-sans text-xs text-brand-400/70">
-                          <Clock className="h-3 w-3" />
-                          {entry.duration}
-                        </span>
-                      </div>
+                      {!isComingSoon && (
+                        <div className="mt-1.5 flex flex-wrap items-center gap-3">
+                          <span className="font-sans text-sm font-semibold text-brand-200">
+                            {entry.price}
+                          </span>
+                          <span className="flex items-center gap-1 font-sans text-xs text-brand-400/70">
+                            <Clock className="h-3 w-3" />
+                            {entry.duration}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -183,18 +193,16 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
 
                     <div
                       className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                        open
-                          ? "max-h-96 opacity-100"
-                          : "max-h-0 opacity-0"
+                        open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                       }`}
                     >
-                      <p className="mt-3 font-sans text-sm leading-relaxed text-brand-400/80">
+                      <p className="mt-3 whitespace-pre-line font-sans text-sm leading-relaxed text-brand-400/80">
                         {entry.benefitDescription}
                       </p>
                     </div>
                   </div>
 
-                  {limpiezaBlocked && !isSelected && (
+                  {!isComingSoon && limpiezaBlocked && !isSelected && (
                     <div className="px-6 pt-3">
                       <div className="flex items-start gap-1.5 rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/20">
                         <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
@@ -222,7 +230,7 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                       )}
                     </button>
 
-                    {isSelected ? (
+                    {!isComingSoon && isSelected && (
                       <a
                         href={limpiezaWhatsAppLink()}
                         target="_blank"
@@ -233,7 +241,9 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                         <MessageCircle className="h-3.5 w-3.5" />
                         Enviar a WhatsApp
                       </a>
-                    ) : (
+                    )}
+
+                    {!isComingSoon && !isSelected && (
                       <button
                         type="button"
                         onClick={() => toggleSimpleSelection(entry.id)}
