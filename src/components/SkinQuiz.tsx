@@ -377,17 +377,9 @@ export default function SkinQuiz() {
                       {recommendedProduct.name}
                     </h4>
 
-                    <ul className="mt-3 flex flex-col gap-2">
-                      {recommendedProduct.includes.map((item, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-2 font-sans text-sm text-brand-400/85"
-                        >
-                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-200" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="mt-3 font-sans text-sm leading-relaxed text-brand-400/85">
+                      {recommendedProduct.description}
+                    </p>
                   </div>
                 )}
 

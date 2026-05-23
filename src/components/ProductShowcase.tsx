@@ -1,6 +1,6 @@
 import type { Product } from "@/data/mockData";
 import { WHATSAPP_NUMBER } from "@/data/mockData";
-import { ShoppingBag, Package } from "lucide-react";
+import { ShoppingBag, Sparkles } from "lucide-react";
 
 interface ProductShowcaseProps {
   products: Product[];
@@ -13,7 +13,7 @@ function buildWhatsAppLink(productName: string): string {
 
 export default function ProductShowcase({ products }: ProductShowcaseProps) {
   return (
-    <section     id="productos" className="bg-brand-50 py-20 md:py-28">
+    <section id="productos" className="bg-brand-50 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="text-center">
           <h2 className="font-serif text-3xl leading-tight text-brand-400 md:text-4xl lg:text-5xl">
@@ -32,10 +32,13 @@ export default function ProductShowcase({ products }: ProductShowcaseProps) {
                 key={product.id}
                 className="flex w-[280px] shrink-0 snap-start flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md"
               >
-                <div
-                  className={`flex h-44 items-center justify-center rounded-t-3xl bg-gradient-to-br ${product.gradient}`}
-                >
-                  <Package className="h-14 w-14 text-white/80" />
+                <div className="flex h-44 items-center justify-center overflow-hidden rounded-t-3xl bg-brand-100">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-cover"
+                    draggable="false"
+                  />
                 </div>
 
                 <div className="flex flex-1 flex-col p-5">
@@ -43,17 +46,9 @@ export default function ProductShowcase({ products }: ProductShowcaseProps) {
                     {product.name}
                   </h3>
 
-                  <ul className="mt-4 flex flex-col gap-2">
-                    {product.includes.map((item, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-2 font-sans text-sm text-brand-400/90"
-                      >
-                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand-200" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-3 font-sans text-sm leading-relaxed text-brand-400/90">
+                    {product.description}
+                  </p>
 
                   <a
                     href={buildWhatsAppLink(product.name)}

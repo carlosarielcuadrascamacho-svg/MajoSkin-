@@ -33,8 +33,8 @@ export type CatalogEntry = SimpleService | ServiceCategory;
 export interface Product {
   id: string;
   name: string;
-  includes: string[];
-  gradient: string;
+  description: string;
+  image: string;
 }
 
 export interface BusinessInfo {
@@ -132,57 +132,51 @@ export const products: Product[] = [
   {
     id: "kit-piel-grasa",
     name: "Kit Piel Grasa",
-    includes: [
-      "Limpiador en espuma purificante",
-      "Tónico a base de niacinamida",
-      "Hidratante oil-free matificante",
-      "Mascarilla de arcilla semanal",
-    ],
-    gradient: "from-emerald-200 to-teal-300",
+    description:
+      "Controla el exceso de grasa, minimiza poros y matifica la piel. Ideal para pieles con brillo excesivo y tendencia acneica.",
+    image: "/images/KitPielGrasa.jpeg",
   },
   {
     id: "kit-piel-seca",
     name: "Kit Piel Seca",
-    includes: [
-      "Limpiador cremoso sin sulfatos",
-      "Tónico hidratante con ácido hialurónico",
-      "Crema nutritiva con manteca de karité",
-      "Suero reparador nocturno",
-    ],
-    gradient: "from-amber-200 to-orange-300",
+    description:
+      "Hidratación profunda que restaura la barrera cutánea. Perfecto para pieles deshidratadas, tirantes o con descamación.",
+    image: "/images/KitPielSeca.jpeg",
   },
   {
     id: "kit-piel-mixta",
     name: "Kit Piel Mixta",
-    includes: [
-      "Gel limpiador equilibrante",
-      "Tónico bifásico regulador",
-      "Emulsión ligera matificante",
-      "Contorno de ojos refrescante",
-    ],
-    gradient: "from-rose-200 to-pink-300",
+    description:
+      "Equilibra las zonas grasas sin resecar las secas. Formulado para pieles con necesidades mixtas.",
+    image: "/images/KitPielMixta.jpeg",
   },
   {
     id: "kit-antiedad",
     name: "Kit Antiedad",
-    includes: [
-      "Limpiador con vitamina C",
-      "Sero antioxidante con retinol",
-      "Crema reafirmante con colágeno",
-      "Contorno de ojos antiarrugas",
-    ],
-    gradient: "from-purple-200 to-violet-300",
+    description:
+      "Previene y combate los signos de la edad. Estimula colágeno, reduce líneas de expresión y reafirma el rostro.",
+    image: "/images/KitPielAnti-Edad.jpeg",
   },
   {
-    id: "kit-iluminador",
-    name: "Kit Iluminador",
-    includes: [
-      "Exfoliante enzimático suave",
-      "Suero iluminador con vitamina C",
-      "Hidratante con efectos glossy",
-      "Mascarilla flash de luminosidad",
-    ],
-    gradient: "from-yellow-200 to-amber-300",
+    id: "kit-acneica",
+    name: "Kit Piel Acneica",
+    description:
+      "Purifica y calma la piel con tendencia acneica. Reduce imperfecciones, controla el sebo y previene brotes.",
+    image: "/images/KitPielAcneica.jpeg",
+  },
+  {
+    id: "kit-anti-manchas",
+    name: "Kit Anti-Manchas",
+    description:
+      "Atenúa manchas y unifica el tono de la piel. Ideal para hiperpigmentación, melasma y marcas post-acné.",
+    image: "/images/KitPielAnti-Manchas.jpeg",
+  },
+  {
+    id: "kit-sensible",
+    name: "Kit Piel Sensible",
+    description:
+      "Calma, hidrata y fortalece la barrera cutánea. Libre de fragancias e irritantes. Para pieles reactivas.",
+    image: "/images/KitPielSencible.jpeg",
   },
 ];
 
