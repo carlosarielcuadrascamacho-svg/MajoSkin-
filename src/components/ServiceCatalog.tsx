@@ -80,6 +80,12 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
 
   const toggleExpand = (id: string) => {
     setExpanded((prev) => (prev === id ? null : id));
+    setDescExpanded(null);
+  };
+
+  const toggleDesc = (id: string) => {
+    setDescExpanded((prev) => (prev === id ? null : id));
+    setExpanded(null);
   };
 
   const toggleSimpleSelection = (id: string) => {
@@ -288,13 +294,19 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                   </div>
                 </div>
 
-                {descExpanded === entry.id && (
+                <div
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                    descExpanded === entry.id
+                      ? "max-h-96 opacity-100"
+                      : "max-h-0 opacity-0"
+                  }`}
+                >
                   <div className="border-t border-brand-500/40 px-6 py-4">
                     <p className="font-sans text-sm leading-relaxed text-brand-400/80">
                       {entry.shortDescription}
                     </p>
                   </div>
-                )}
+                </div>
 
                 <div
                   className={`transition-all duration-300 ease-in-out ${
@@ -422,11 +434,7 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                 <div className="mt-auto flex items-center justify-between px-6 pb-5 pt-5">
                   <button
                     type="button"
-                    onClick={() =>
-                      setDescExpanded((prev) =>
-                        prev === entry.id ? null : entry.id
-                      )
-                    }
+                    onClick={() => toggleDesc(entry.id)}
                     className="inline-flex items-center gap-1 font-sans text-sm font-medium text-brand-300 transition-colors hover:text-brand-200"
                   >
                     {descExpanded === entry.id ? (
