@@ -246,7 +246,7 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                         </span>
                       )}
                       <span className="inline-flex items-center rounded-full bg-brand-100 px-2 py-0.5 font-sans text-[10px] font-medium uppercase tracking-wider text-brand-300">
-                        Elige opciones
+                        {entry.id === "diseno-cejas" ? "Elige opción" : "Elige opciones"}
                       </span>
                     </div>
 
