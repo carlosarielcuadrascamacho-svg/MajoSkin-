@@ -76,7 +76,7 @@ export const services: CatalogEntry[] = [
     type: "category",
     title: "Depilación con Cera",
     shortDescription:
-      "Elimina el vello desde la raíz para brindar una piel más suave, limpia y con un acabado uniforme.",
+      "Servicio de depilación que elimina el vello desde la raíz para brindar una piel más suave, limpia y con un acabado uniforme. Se realiza con cuidado y delicadeza para ayudar a minimizar irritación y dejar la piel con una sensación fresca y estética por más tiempo.",
     gradient: "from-brand-300 to-brand-200",
     selectionType: "multi",
     items: [
