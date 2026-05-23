@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   description:
     "Estudiante de la Licenciatura en Cosmiatría. Tratamientos faciales profesionales en Villa Benito Juárez, Sinaloa. Agenda tu cita hoy.",
   icons: {
-    icon: [{ url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" }],
+    icon: [{ url: "/images/LogoMajocSkin.png", type: "image/png" }],
     apple: [{ url: "/icons/apple-icon-180.png", sizes: "180x180" }],
   },
   manifest: "/manifest.json",

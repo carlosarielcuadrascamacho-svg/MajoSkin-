@@ -31,11 +31,15 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-8 md:px-16 lg:px-24">
-        <a
-          href="#"
-          className="font-serif text-xl font-semibold tracking-tight text-brand-400"
-        >
-          Majoc Skin
+        <a href="#" className="flex items-center gap-2">
+          <img
+            src="/images/LogoMajocSkin.png"
+            alt="Majoc Skin"
+            className="h-8 w-auto"
+          />
+          <span className="font-serif text-xl font-semibold tracking-tight text-brand-400">
+            Majoc Skin
+          </span>
         </a>
 
           <div className="flex items-center gap-1">
