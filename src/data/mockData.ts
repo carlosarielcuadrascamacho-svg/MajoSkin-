@@ -1,7 +1,14 @@
 export const WHATSAPP_NUMBER = "526731044855";
 
-export interface Service {
+export interface ServiceItem {
   id: string;
+  name: string;
+  price: string;
+}
+
+export interface SimpleService {
+  id: string;
+  type: "simple";
   title: string;
   shortDescription: string;
   benefitDescription: string;
@@ -9,6 +16,18 @@ export interface Service {
   price: string;
   duration: string;
 }
+
+export interface ServiceCategory {
+  id: string;
+  type: "category";
+  title: string;
+  shortDescription: string;
+  gradient: string;
+  selectionType: "multi" | "single";
+  items: ServiceItem[];
+}
+
+export type CatalogEntry = SimpleService | ServiceCategory;
 
 export interface Product {
   id: string;
@@ -40,66 +59,56 @@ export interface FAQ {
   answer: string;
 }
 
-export const services: Service[] = [
+export const services: CatalogEntry[] = [
   {
     id: "limpieza-facial",
+    type: "simple",
     title: "Limpieza Facial Profunda",
     shortDescription: "Libera tus poros y devuelve la luminosidad",
     benefitDescription:
       "Eliminación de impurezas, células muertas y exceso de sebo. Tu piel respira y recupera su brillo natural al instante.",
     gradient: "from-brand-200 to-brand-300",
-    price: "$250",
+    price: "$300",
     duration: "60 min",
   },
   {
-    id: "laminado-cejas",
-    title: "Laminado de Cejas",
-    shortDescription: "Cejas perfectamente definidas y con movimiento",
-    benefitDescription:
-      "Domina la dirección natural de tus cejas. Lucen más pobladas, simétricas y con un acabado sedoso por semanas.",
+    id: "depilacion-cera",
+    type: "category",
+    title: "Depilación con Cera",
+    shortDescription: "Elimina el vello de forma rápida y eficaz",
     gradient: "from-brand-300 to-brand-200",
-    price: "$250",
-    duration: "45 min",
+    selectionType: "multi",
+    items: [
+      { id: "piernas-completas", name: "Piernas completas", price: "$300" },
+      { id: "media-piernas", name: "1/2 piernas", price: "$250" },
+      { id: "brazos-completos", name: "Brazos completos", price: "$200" },
+      { id: "patillas", name: "Patillas", price: "$60" },
+      { id: "bozo", name: "Bozo (bigote)", price: "$50" },
+      { id: "axilas", name: "Axilas", price: "$150" },
+    ],
   },
   {
-    id: "diseno-mirada",
-    title: "Diseño de Miradas",
-    shortDescription: "Pestañas que hablan por sí solas",
-    benefitDescription:
-      "Realzamos tu mirada con técnicas de lifting y permanente que abren tus ojos sin necesidad de máscara.",
+    id: "diseno-cejas",
+    type: "category",
+    title: "Diseño de Cejas",
+    shortDescription: "Realza tu mirada con cejas perfectamente definidas",
     gradient: "from-brand-200 to-brand-100",
-    price: "$250",
-    duration: "60 min",
-  },
-  {
-    id: "dermoplanning",
-    title: "Dermoplanning",
-    shortDescription: "Renovación total con resultados inmediatos",
-    benefitDescription:
-      "Exfoliación profunda que elimina vello facial y células muertas. Tu maquillaje se verá impecable por más tiempo.",
-    gradient: "from-brand-100 to-brand-200",
-    price: "$250",
-    duration: "45 min",
-  },
-  {
-    id: "hidratacion-facial",
-    title: "Hidratación Facial",
-    shortDescription: "Recupera la barrera natural de tu piel",
-    benefitDescription:
-      "Cóctel de activos hidratantes que devuelven la elasticidad, firmeza y confort. Ideal para pieles deshidratadas.",
-    gradient: "from-brand-300 to-brand-100",
-    price: "$250",
-    duration: "50 min",
-  },
-  {
-    id: "skin-boosters",
-    title: "Skin Boosters",
-    shortDescription: "Luminosidad desde el interior",
-    benefitDescription:
-      "Ácido hialurónico y vitaminas que hidratan en profundidad. Resultado: piel jugosa, tersa y radiante.",
-    gradient: "from-brand-200 to-brand-300",
-    price: "$250",
-    duration: "45 min",
+    selectionType: "single",
+    items: [
+      {
+        id: "laminado-cera",
+        name: "Laminado + diseño con cera",
+        price: "$180",
+      },
+      {
+        id: "laminado-pinzas",
+        name: "Laminado + diseño con pinzas",
+        price: "$150",
+      },
+      { id: "diseno-pinzas", name: "Diseño de cejas (pinzas)", price: "$80" },
+      { id: "diseno-cera", name: "Diseño de cejas (cera)", price: "$100" },
+      { id: "laminado", name: "Laminado de cejas", price: "$100" },
+    ],
   },
 ];
 
