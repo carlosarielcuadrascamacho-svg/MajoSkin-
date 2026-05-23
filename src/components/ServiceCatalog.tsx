@@ -12,6 +12,7 @@ import {
   Clock,
   MessageCircle,
   Check,
+  AlertCircle,
 } from "lucide-react";
 
 const iconMap: Record<string, typeof Sparkles> = {
@@ -38,6 +39,32 @@ function multiWhatsAppLink(
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
 
+function limpiezaWhatsAppLink(): string {
+  const msg = `¡Hola Majo! Quiero agendar una cita de Limpieza Facial Profunda ($300)`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+
+function getDesdePrice(entry: CatalogEntry): string | null {
+  if (entry.type === "simple") return null;
+  if (!entry.items || entry.items.length === 0) return null;
+  const prices = entry.items.map((i) =>
+    parseInt(i.price.replace(/[^0-9]/g, ""))
+  );
+  const min = Math.min(...prices);
+  return `Desde $${min}`;
+}
+
+function getSelectedCount(
+  entry: CatalogEntry,
+  selected: Record<string, string[]>
+): number {
+  if (entry.type !== "category" || !entry.items) return 0;
+  return (selected[entry.id] || []).length;
+}
+
+const WARNING_TEXT =
+  "Por límite de tiempo, agendar por separado de la limpieza facial.";
+
 interface ServiceCatalogProps {
   services: CatalogEntry[];
 }
@@ -45,16 +72,29 @@ interface ServiceCatalogProps {
 export default function ServiceCatalog({ services }: ServiceCatalogProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [selected, setSelected] = useState<Record<string, string[]>>({});
+  const [selectedSimple, setSelectedSimple] = useState<string | null>(null);
+
+  const hasDepilacion = (selected["depilacion-cera"]?.length ?? 0) > 0;
+  const hasLimpieza = selectedSimple === "limpieza-facial";
 
   const toggleExpand = (id: string) => {
     setExpanded((prev) => (prev === id ? null : id));
   };
 
+  const toggleSimpleSelection = (id: string) => {
+    if (id === "limpieza-facial" && hasDepilacion) return;
+    setSelectedSimple((prev) => (prev === id ? null : id));
+  };
+
   const toggleItem = (categoryId: string, itemId: string) => {
+    if (categoryId === "depilacion-cera" && hasLimpieza) return;
     setSelected((prev) => {
       const current = prev[categoryId] || [];
       if (current.includes(itemId)) {
-        return { ...prev, [categoryId]: current.filter((id) => id !== itemId) };
+        return {
+          ...prev,
+          [categoryId]: current.filter((id) => id !== itemId),
+        };
       }
       return { ...prev, [categoryId]: [...current, itemId] };
     });
@@ -65,6 +105,8 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
     const selectedIds = selected[entry.id] || [];
     return entry.items.filter((item) => selectedIds.includes(item.id));
   };
+
+  const limpiezaBlocked = hasDepilacion;
 
   return (
     <section id="servicios" className="bg-brand-100/50 py-20 md:py-28">
@@ -80,15 +122,20 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((entry) => {
+          {services.map((entry, idx) => {
             const Icon = iconMap[entry.id] || Sparkles;
             const open = expanded === entry.id;
+            const isLast = idx === services.length - 1;
 
             if (entry.type === "simple") {
+              const isSelected = selectedSimple === entry.id;
+
               return (
                 <article
                   key={entry.id}
-                  className="group flex flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md"
+                  className={`group flex flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md ${
+                    isLast ? "md:col-span-2 lg:col-span-1" : ""
+                  } ${limpiezaBlocked ? "opacity-50" : ""}`}
                 >
                   <div className="flex items-start gap-4 p-6 pb-0">
                     <div
@@ -98,9 +145,17 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-serif text-lg font-semibold leading-snug text-brand-400">
-                        {entry.title}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-serif text-lg font-semibold leading-snug text-brand-400">
+                          {entry.title}
+                        </h3>
+                        {isSelected && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-brand-200/20 px-2.5 py-0.5 font-sans text-[11px] font-semibold text-brand-200">
+                            <Check className="h-2.5 w-2.5" />
+                            Seleccionado
+                          </span>
+                        )}
+                      </div>
 
                       <div className="mt-1.5 flex flex-wrap items-center gap-3">
                         <span className="font-sans text-sm font-semibold text-brand-200">
@@ -126,6 +181,17 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                     )}
                   </div>
 
+                  {limpiezaBlocked && !isSelected && (
+                    <div className="px-6 pt-3">
+                      <div className="flex items-start gap-1.5 rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/20">
+                        <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
+                        <p className="font-sans text-[12px] leading-tight text-red-500">
+                          {WARNING_TEXT}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="mt-auto flex items-center justify-between px-6 pb-5 pt-5">
                     <button
                       type="button"
@@ -143,26 +209,49 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                       )}
                     </button>
 
-                    <a
-                      href={simpleWhatsAppLink(entry.title, entry.price)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-2xl bg-brand-200 px-4 py-2 font-sans text-xs font-semibold text-white transition-all hover:bg-brand-300"
-                    >
-                      <MessageCircle className="h-3.5 w-3.5" />
-                      Agendar
-                    </a>
+                    {isSelected ? (
+                      <a
+                        href={limpiezaWhatsAppLink()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setSelectedSimple(null)}
+                        className="inline-flex items-center gap-1.5 rounded-2xl bg-brand-200 px-4 py-2 font-sans text-xs font-semibold text-white transition-all hover:bg-brand-300"
+                      >
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        Enviar a WhatsApp
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => toggleSimpleSelection(entry.id)}
+                        disabled={limpiezaBlocked}
+                        className={`inline-flex items-center gap-1.5 rounded-2xl px-4 py-2 font-sans text-xs font-semibold transition-all ${
+                          limpiezaBlocked
+                            ? "cursor-not-allowed bg-brand-500/50 text-brand-400/50"
+                            : "bg-brand-200 text-white hover:bg-brand-300"
+                        }`}
+                      >
+                        <Check className="h-3.5 w-3.5" />
+                        {limpiezaBlocked ? "No disponible" : "Seleccionar"}
+                      </button>
+                    )}
                   </div>
                 </article>
               );
             }
 
+            const desdePrice = getDesdePrice(entry);
+            const selectedCount = getSelectedCount(entry, selected);
             const selectedItems = getSelectedItems(entry);
+            const isDepilacion = entry.id === "depilacion-cera";
+            const isBlocked = isDepilacion && hasLimpieza;
 
             return (
               <article
                 key={entry.id}
-                className="group flex flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md"
+                className={`group flex flex-col rounded-3xl bg-card shadow-sm transition-all hover:shadow-md ${
+                  isLast ? "md:col-span-2 lg:col-span-1" : ""
+                } ${isBlocked ? "opacity-50" : ""}`}
               >
                 <div className="flex items-start gap-4 p-6 pb-0">
                   <div
@@ -172,12 +261,28 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-serif text-lg font-semibold leading-snug text-brand-400">
-                      {entry.title}
-                    </h3>
-                    <p className="mt-1 font-sans text-sm leading-relaxed text-brand-400/90">
-                      {entry.shortDescription}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-serif text-lg font-semibold leading-snug text-brand-400">
+                        {entry.title}
+                      </h3>
+                      {!open && selectedCount > 0 && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-brand-200/20 px-2.5 py-0.5 font-sans text-[11px] font-semibold text-brand-200">
+                          <Check className="h-2.5 w-2.5" />
+                          {selectedCount} seleccionado{selectedCount > 1 ? "s" : ""}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                      {desdePrice && (
+                        <span className="font-sans text-sm font-semibold text-brand-200">
+                          {desdePrice}
+                        </span>
+                      )}
+                      <span className="inline-flex items-center rounded-full bg-brand-100 px-2 py-0.5 font-sans text-[10px] font-medium uppercase tracking-wider text-brand-300">
+                        Elige opciones
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -188,6 +293,15 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                 >
                   {entry.items && (
                     <div className="border-t border-brand-500/40 px-6 py-4">
+                      {isBlocked && (
+                        <div className="mb-3 flex items-start gap-1.5 rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/20">
+                          <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
+                          <p className="font-sans text-[12px] leading-tight text-red-500">
+                            {WARNING_TEXT}
+                          </p>
+                        </div>
+                      )}
+
                       {entry.selectionType === "multi" ? (
                         <>
                           <div className="space-y-1">
@@ -200,15 +314,22 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                                   key={item.id}
                                   type="button"
                                   onClick={() =>
-                                    toggleItem(entry.id, item.id)
+                                    !isBlocked && toggleItem(entry.id, item.id)
                                   }
-                                  className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-brand-100"
+                                  disabled={isBlocked}
+                                  className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left transition-colors ${
+                                    isBlocked
+                                      ? "cursor-not-allowed"
+                                      : "hover:bg-brand-100"
+                                  }`}
                                 >
                                   <div className="flex items-center gap-3">
                                     <div
                                       className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors ${
                                         isSelected
                                           ? "border-brand-200 bg-brand-200 text-white"
+                                          : isBlocked
+                                          ? "border-brand-500/30"
                                           : "border-brand-500"
                                       }`}
                                     >
@@ -216,7 +337,13 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                                         <Check className="h-3 w-3" />
                                       )}
                                     </div>
-                                    <span className="font-sans text-sm text-brand-400">
+                                    <span
+                                      className={`font-sans text-sm ${
+                                        isBlocked
+                                          ? "text-brand-400/50"
+                                          : "text-brand-400"
+                                      }`}
+                                    >
                                       {item.name}
                                     </span>
                                   </div>
@@ -228,6 +355,12 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                             })}
                           </div>
 
+                          {!isBlocked && selectedItems.length === 0 && (
+                            <p className="mt-3 text-center font-sans text-xs text-brand-400/50">
+                              Selecciona las zonas que deseas depilar
+                            </p>
+                          )}
+
                           {selectedItems.length > 0 && (
                             <div className="mt-4">
                               <a
@@ -238,7 +371,8 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                               >
                                 <MessageCircle className="h-4 w-4" />
                                 Enviar a WhatsApp (
-                                {selectedItems.length} seleccionados)
+                                {selectedItems.length} seleccionado
+                                {selectedItems.length > 1 ? "s" : ""})
                               </a>
                             </div>
                           )}
