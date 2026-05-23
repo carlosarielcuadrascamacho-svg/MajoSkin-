@@ -71,6 +71,7 @@ interface ServiceCatalogProps {
 
 export default function ServiceCatalog({ services }: ServiceCatalogProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [descExpanded, setDescExpanded] = useState<string | null>(null);
   const [selected, setSelected] = useState<Record<string, string[]>>({});
   const [selectedSimple, setSelectedSimple] = useState<string | null>(null);
 
@@ -284,11 +285,16 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                       </span>
                     </div>
 
-                    <p className="mt-2 font-sans text-sm leading-relaxed text-brand-400/90">
+                  </div>
+                </div>
+
+                {descExpanded === entry.id && (
+                  <div className="border-t border-brand-500/40 px-6 py-4">
+                    <p className="font-sans text-sm leading-relaxed text-brand-400/80">
                       {entry.shortDescription}
                     </p>
                   </div>
-                </div>
+                )}
 
                 <div
                   className={`transition-all duration-300 ease-in-out ${
@@ -416,8 +422,28 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                 <div className="mt-auto flex items-center justify-between px-6 pb-5 pt-5">
                   <button
                     type="button"
-                    onClick={() => toggleExpand(entry.id)}
+                    onClick={() =>
+                      setDescExpanded((prev) =>
+                        prev === entry.id ? null : entry.id
+                      )
+                    }
                     className="inline-flex items-center gap-1 font-sans text-sm font-medium text-brand-300 transition-colors hover:text-brand-200"
+                  >
+                    {descExpanded === entry.id ? (
+                      <>
+                        Menos <ChevronUp className="h-3.5 w-3.5" />
+                      </>
+                    ) : (
+                      <>
+                        Saber más <ChevronDown className="h-3.5 w-3.5" />
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleExpand(entry.id)}
+                    className="inline-flex items-center gap-1.5 rounded-2xl bg-brand-200 px-4 py-2 font-sans text-xs font-semibold text-white transition-all hover:bg-brand-300"
                   >
                     {open ? (
                       <>
