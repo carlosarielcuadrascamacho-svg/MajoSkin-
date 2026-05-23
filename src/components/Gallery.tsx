@@ -70,16 +70,26 @@ export default function Gallery() {
 
         <div className="mt-12 flex flex-col gap-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {interactiveResults.map((item, i) => (
-              <AnimatedSection key={`slider-${i}`} delay={i * 100}>
-                <BeforeAfterSlider
-                  beforeImage={item.before}
-                  afterImage={item.after}
-                  title={item.title}
-                  description={item.desc}
-                />
-              </AnimatedSection>
-            ))}
+            {interactiveResults.map((item, i) => {
+              const isLastOdd =
+                interactiveResults.length % 2 !== 0 &&
+                i === interactiveResults.length - 1;
+              return (
+                <div
+                  key={`slider-${i}`}
+                  className={isLastOdd ? "md:col-span-2" : ""}
+                >
+                  <AnimatedSection delay={i * 100}>
+                    <BeforeAfterSlider
+                      beforeImage={item.before}
+                      afterImage={item.after}
+                      title={item.title}
+                      description={item.desc}
+                    />
+                  </AnimatedSection>
+                </div>
+              );
+            })}
           </div>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
