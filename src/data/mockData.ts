@@ -4,7 +4,6 @@ export interface ServiceItem {
   id: string;
   name: string;
   price: string;
-  duration?: string;
 }
 
 export interface SimpleService {
@@ -23,7 +22,6 @@ export interface ServiceCategory {
   type: "category";
   title: string;
   shortDescription: string;
-  benefitDescription?: string;
   gradient: string;
   selectionType: "multi" | "single";
   items: ServiceItem[];
@@ -69,7 +67,7 @@ export const services: CatalogEntry[] = [
     shortDescription: "Libera tus poros y devuelve la luminosidad",
     benefitDescription:
       "Tratamiento ideal para eliminar impurezas, exceso de grasa y células muertas mientras se revitaliza la piel profundamente. Ayuda a mejorar la textura, luminosidad y apariencia del rostro mediante una experiencia relajante y personalizada.",
-    gradient: "from-amber-100 to-amber-200/65 dark:from-amber-950/40 dark:to-amber-900/20",
+    gradient: "from-brand-200 to-brand-300",
     price: "$300",
     duration: "60 min",
   },
@@ -78,18 +76,16 @@ export const services: CatalogEntry[] = [
     type: "category",
     title: "Depilación con Cera",
     shortDescription:
-      "Elimina el vello desde la raíz para brindar una piel suave y uniforme.",
-    benefitDescription:
-      "Servicio de depilación que elimina el vello desde la raíz para brindar una piel más suave, limpia y con un acabado uniforme. Se realiza con cuidado y delicadeza para ayudar a minimizar irritación y dejar la piel con una sensación fresca y estética por más tiempo.",
-    gradient: "from-rose-100 to-rose-200/65 dark:from-rose-950/40 dark:to-rose-900/20",
+      "Elimina el vello desde la raíz para brindar una piel más suave, limpia y con un acabado uniforme.",
+    gradient: "from-brand-300 to-brand-200",
     selectionType: "multi",
     items: [
-      { id: "piernas-completas", name: "Piernas completas", price: "$300", duration: "45 min" },
-      { id: "media-piernas", name: "1/2 piernas", price: "$250", duration: "30 min" },
-      { id: "brazos-completos", name: "Brazos completos", price: "$200", duration: "30 min" },
-      { id: "patillas", name: "Patillas", price: "$60", duration: "15 min" },
-      { id: "bozo", name: "Bozo (bigote)", price: "$50", duration: "15 min" },
-      { id: "axilas", name: "Axilas", price: "$150", duration: "20 min" },
+      { id: "piernas-completas", name: "Piernas completas", price: "$300" },
+      { id: "media-piernas", name: "1/2 piernas", price: "$250" },
+      { id: "brazos-completos", name: "Brazos completos", price: "$200" },
+      { id: "patillas", name: "Patillas", price: "$60" },
+      { id: "bozo", name: "Bozo (bigote)", price: "$50" },
+      { id: "axilas", name: "Axilas", price: "$150" },
     ],
   },
   {
@@ -97,27 +93,23 @@ export const services: CatalogEntry[] = [
     type: "category",
     title: "Diseño de Cejas",
     shortDescription:
-      "Alinea, define y estiliza tus cejas según tus facciones.",
-    benefitDescription:
       "Tratamiento que ayuda a alinear, definir y estilizar las cejas para lograr un efecto más ordenado, peinado y armonioso según tus facciones.",
-    gradient: "from-emerald-100 to-emerald-200/65 dark:from-emerald-950/40 dark:to-emerald-900/20",
+    gradient: "from-brand-200 to-brand-100",
     selectionType: "single",
     items: [
       {
         id: "laminado-cera",
         name: "Laminado + diseño con cera",
         price: "$180",
-        duration: "45 min",
       },
       {
         id: "laminado-pinzas",
         name: "Laminado + diseño con pinzas",
         price: "$150",
-        duration: "45 min",
       },
-      { id: "diseno-pinzas", name: "Diseño de cejas (pinzas)", price: "$80", duration: "25 min" },
-      { id: "diseno-cera", name: "Diseño de cejas (cera)", price: "$100", duration: "25 min" },
-      { id: "laminado", name: "Laminado de cejas", price: "$100", duration: "35 min" },
+      { id: "diseno-pinzas", name: "Diseño de cejas (pinzas)", price: "$80" },
+      { id: "diseno-cera", name: "Diseño de cejas (cera)", price: "$100" },
+      { id: "laminado", name: "Laminado de cejas", price: "$100" },
     ],
   },
 ];
