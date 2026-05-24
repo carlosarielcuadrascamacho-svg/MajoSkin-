@@ -4,9 +4,11 @@ export default function AboutMe() {
       <div className="mx-auto max-w-6xl px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex flex-col items-center gap-12 md:flex-row md:items-start md:gap-16">
           <div className="shrink-0">
-            <div className="flex h-48 w-48 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-brand-300 shadow-md md:h-56 md:w-56">
-              <span className="font-serif text-5xl text-white">M</span>
-            </div>
+            <img
+              src="/images/FotoPerfilMajoSkin.jpeg"
+              alt="María - Majoc Skin"
+              className="h-48 w-48 rounded-full object-cover shadow-md md:h-56 md:w-56"
+            />
           </div>
 
           <div className="flex-1 text-center md:text-left">
