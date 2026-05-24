@@ -71,7 +71,7 @@ export const services: CatalogEntry[] = [
       "Tratamiento ideal para eliminar impurezas, exceso de grasa y células muertas mientras se revitaliza la piel profundamente. Ayuda a mejorar la textura, luminosidad y apariencia del rostro mediante una experiencia relajante y personalizada.",
     gradient: "from-brand-200 to-brand-300",
     price: "$300",
-    duration: "60 min",
+    duration: "90 min",
   },
   {
     id: "depilacion-cera",
