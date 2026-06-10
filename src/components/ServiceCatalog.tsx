@@ -7,6 +7,7 @@ import {
   Sparkles,
   Eye,
   Droplets,
+  Zap,
   ChevronDown,
   ChevronUp,
   Clock,
@@ -18,6 +19,7 @@ const iconMap: Record<string, typeof Sparkles> = {
   "limpieza-facial": Droplets,
   "depilacion-cera": Sparkles,
   "diseno-cejas": Eye,
+  "rf-lifting": Zap,
 };
 
 function simpleWhatsAppLink(title: string, price: string): string {
@@ -116,6 +118,7 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
 
             if (entry.type === "simple") {
               const isComingSoon = entry.comingSoon;
+              const isNew = entry.isNew;
 
               return (
                 <article
@@ -124,6 +127,8 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                     isLast ? "md:col-span-2 lg:col-span-1" : ""
                   } ${
                     isComingSoon ? "border-2 border-dashed border-brand-300/40" : ""
+                  } ${
+                    isNew ? "ring-2 ring-brand-200/50 shadow-lg shadow-brand-200/20" : ""
                   }`}
                 >
                   <div className="flex items-start gap-4 p-6 pb-0">
@@ -138,6 +143,12 @@ export default function ServiceCatalog({ services }: ServiceCatalogProps) {
                         <h3 className="font-serif text-lg font-semibold leading-snug text-brand-400">
                           {entry.title}
                         </h3>
+                        {isNew && (
+                          <span className="inline-flex animate-pulse items-center gap-1 rounded-full bg-gradient-to-r from-brand-200 to-brand-300 px-2.5 py-0.5 font-sans text-[11px] font-semibold text-white shadow-sm">
+                            <Sparkles className="h-3 w-3" />
+                            NUEVO
+                          </span>
+                        )}
                         {isComingSoon && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 font-sans text-[11px] font-semibold text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
                             PRÓXIMAMENTE

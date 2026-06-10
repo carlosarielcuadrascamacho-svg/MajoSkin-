@@ -16,6 +16,7 @@ export interface SimpleService {
   price: string;
   duration: string;
   comingSoon?: boolean;
+  isNew?: boolean;
 }
 
 export interface ServiceCategory {
@@ -62,6 +63,19 @@ export interface FAQ {
 }
 
 export const services: CatalogEntry[] = [
+  {
+    id: "rf-lifting",
+    type: "simple",
+    title: "RF Lifting Experience",
+    shortDescription:
+      "Facial reafirmante con radiofrecuencia para mejorar la flacidez y estimular colágeno",
+    benefitDescription:
+      "Facial reafirmante con radiofrecuencia diseñado para mejorar la apariencia de flacidez, estimular colágeno y brindar un efecto lifting inmediato. Incluye masaje relajante en cuello y hombros, maniobras lifting, activos reafirmantes y mascarilla hidropástica para una piel más firme, luminosa y revitalizada.\n\n🤍 Ideal para:\n* Piel cansada\n* Pérdida de firmeza\n* Rostro inflamado\n* Eventos especiales",
+    gradient: "from-brand-200 to-brand-300",
+    price: "$450",
+    duration: "60 min",
+    isNew: true,
+  },
   {
     id: "limpieza-facial",
     type: "simple",
@@ -113,19 +127,6 @@ export const services: CatalogEntry[] = [
       { id: "diseno-cera", name: "Diseño de cejas (cera)", price: "$100" },
       { id: "laminado", name: "Laminado de cejas", price: "$100" },
     ],
-  },
-  {
-    id: "rf-lifting",
-    type: "simple",
-    title: "RF Lifting Experience",
-    shortDescription:
-      "Facial reafirmante con radiofrecuencia para mejorar la flacidez y estimular colágeno",
-    benefitDescription:
-      "Facial reafirmante con radiofrecuencia diseñado para mejorar la apariencia de flacidez, estimular colágeno y brindar un efecto lifting inmediato. Incluye masaje relajante en cuello y hombros, maniobras lifting, activos reafirmantes y mascarilla hidropástica para una piel más firme, luminosa y revitalizada.\n\n🤍 Ideal para:\n* Piel cansada\n* Pérdida de firmeza\n* Rostro inflamado\n* Eventos especiales",
-    gradient: "from-brand-200 to-brand-300",
-    price: "",
-    duration: "",
-    comingSoon: true,
   },
 ];
 
