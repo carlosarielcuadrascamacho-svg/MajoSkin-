@@ -1,4 +1,5 @@
-export const WHATSAPP_NUMBER = "526731044855";
+export const WHATSAPP_NUMBER =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "526731344408";
 
 export interface ServiceItem {
   id: string;

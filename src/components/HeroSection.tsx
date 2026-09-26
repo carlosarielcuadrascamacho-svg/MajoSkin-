@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { WHATSAPP_NUMBER } from "@/data/mockData";
+
 export default function HeroSection() {
   return (
     <section className="relative flex h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-brand-100 via-brand-50 to-brand-200 bg-[length:200%_200%] animate-gradient">
@@ -25,7 +27,7 @@ export default function HeroSection() {
 
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
           <Link
-            href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "526731044855"}?text=Hola%20Majo%2C%20quiero%20agendar%20una%20cita`}
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola%20Majo%2C%20quiero%20agendar%20una%20cita`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex h-14 w-full items-center justify-center rounded-2xl bg-brand-200 px-10 font-sans text-sm font-semibold text-white transition-all hover:bg-brand-300 hover:shadow-md sm:w-auto"

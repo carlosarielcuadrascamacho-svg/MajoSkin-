@@ -1,3 +1,4 @@
+import { WHATSAPP_NUMBER } from "@/data/mockData";
 import type { BusinessInfo } from "@/data/mockData";
 import { MapPin, Camera, Clock, Heart } from "lucide-react";
 import MapEmbed from "./MapEmbed";
@@ -21,7 +22,7 @@ export default function FooterAndLocation({
             </p>
 
             <a
-              href={`https://wa.me/${"526731044855"}?text=Hola%20Mar%C3%ADa%2C%20tengo%20una%20consulta`}
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hola%20Mar%C3%ADa%2C%20tengo%20una%20consulta`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 font-sans text-sm text-brand-200 transition-colors hover:text-brand-100"
